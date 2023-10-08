@@ -6,8 +6,11 @@ export default class AuthController {
     try {
       const { username, email, password } = req.body;
 
+      const userExist = await User.findOne({ email })
+      if (userExist) return res.status(400).json({ message: 'User with email already exist' });
+
       if (!username && !email && !password) {
-        res.status(400).json({ message: 'Fill all required fields' });
+        return res.status(400).json({ message: 'Fill all required fields' });
       } else {
         const user = new User({
           email,
@@ -16,36 +19,36 @@ export default class AuthController {
         });
         await user.save();
 
-        res.status(201).json({ user });
+        return res.status(201).json({ user });
       }
     } catch (err) {
-      res.status(500).json({ error: err.message });
+      return res.status(500).json({ message: err.message });
     }
   }
 
   static async login(req, res) {
+    if (!req.body.email || !req.body.password) {
+      return res.status(400).json({ message: 'Email and password fields are required' });
+    }
     try {
-      const { email, password } = req.body;
+      const user = await User.findOne({ email: req.body.email });
 
-      if (!email || !password) {
-        res.status(400).json({ message: 'Email and password fields are required' });
-      }
-      const user = await User.findOne({ email });
       if (!user) {
-        res.status(400).json({ message: 'User with email does not exist' });
+        return res.status(400).json({ message: 'User with email does not exist' });
       }
 
-      const checkPassword = comparePassword(password, user.password);
+      const checkPassword = comparePassword(req.body.password, user.password);
 
       if (!checkPassword) {
-        res.status(400).json({ message: 'Invalid Credentials' });
+        return res.status(400).json({ message: 'Invalid Credentials' });
       }
 
       const token = generateJWTToken(user._id);
 
-      res.status(200).json({ message: 'Login Success', data: { user, token } });
+      return res.status(200).json({ message: 'Login Success', data: { user, token } });
     } catch (err) {
-      res.status(500).json({ message: 'Something went wrong!' });
+      return res.status(500).json({ message: 'Something went wrong!' });
     }
   }
+
 }

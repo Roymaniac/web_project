@@ -13,14 +13,14 @@ const CreateChatRoomModal = ({ createChatRoom, closeModal }) => {
 
     return (
         <div className="fixed inset-0 flex items-center justify-center z-50">
-            <div className="bg-gray-50 dark:bg-gray-800 p-4 rounded shadow-lg w-1/3">
+            <div className="bg-gray-100 text-black p-4 rounded shadow-lg w-1/3">
                 <h2 className="text-xl font-semibold mb-2">Create Chat Room</h2>
                 <input
                     type="text"
                     placeholder="Chat Room Name"
                     value={newRoomName}
                     onChange={(e) => setNewRoomName(e.target.value)}
-                    className="border p-2 rounded w-full mb-2"
+                    className="border bg-white text-black p-2 rounded w-full mb-2"
                 />
                 <div className="flex justify-end">
                     <button

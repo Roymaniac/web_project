@@ -25,7 +25,7 @@ const Login = () => {
             const token = response.data.token;
             localStorage.setItem("token", token);
             alert(response.message);
-            navigate("/");
+            navigate("/channels");
 
         } catch (err) {
             // console.log(err);

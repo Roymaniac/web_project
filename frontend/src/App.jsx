@@ -19,7 +19,7 @@ function App() {
           <Route path="/logout" element={<Logout />} />
 
           <Route path="/" element={<Home />} />
-          <Route path="/channel" element={<Channel />} />
+          <Route path="/channels" element={<Channel />} />
         </Routes>
       </Router>
     </>
